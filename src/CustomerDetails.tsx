@@ -2,32 +2,35 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 
 import './App.css'
+
+interface Customer {
+    id?: number;
+    name?: string;
+    username?: string;
+    email?: string;
+    address?: {
+      street?: string;
+      suite?: string;
+      city?: string;
+      zipcode?: string;
+      geo?: {
+        lat?: string;
+        lng?: string;
+      };
+    };
+    phone?: string;
+    website?: string;
+    company?: {
+      name?: string;
+      catchPhrase?: string;
+      bs?: string;
+    };
+  }
+
 function CustomerDetails() {
 
   const { id } = useParams();
-  const [customer, setUser] = useState({"id": 0,
-  "name": "",
-  "username": "",
-  "email": "",
-  "address": {
-    "street": "",
-    "suite": "",
-    "city": "",
-    "zipcode": "",
-    "geo": {
-      "lat": "",
-      "lng": ""
-    }
-  },
-  "phone": "",
-  "website": "",
-  "company": {
-    "name": "",
-    "catchPhrase": "",
-    "bs": ""
-  }
-    
-  });
+  const [customer, setUser] = useState<Customer>({});
 
   useEffect(() => {
     console.log("TRY")
@@ -47,7 +50,7 @@ function CustomerDetails() {
     <div>
     <div>Email: {customer.email}</div>
     <div>Phone: {customer.phone}</div>
-    <div>City: {customer.address.city}</div>
+    <div>City: {customer.address?.city}</div>
     <div>Etc Etc ...</div>
     </div>
     </div>
