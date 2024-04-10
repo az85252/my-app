@@ -5,43 +5,48 @@ import './App.css'
 
 function CustomerDetails() {
 
-  const { id } = useParams(); //we need this to get the id for bwloe 
+  const { id } = useParams();
   const [customer, setUser] = useState<Partial<Customer>>({});
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+      const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`); 
+      if (!response.ok) {
+        throw new Error('ERROR')
+      };
       const data = await response.json();
       setUser(data);
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <div>
     <h3>{customer.name}</h3>
-    <div>
-      <p>Email: {customer.email}</p>
-      <p>Phone: {customer.phone}</p>
       <div>
-        <h4>Address:</h4>
-        <p>Street: {customer.address?.street}</p>
-        <p>Suite: {customer.address?.suite} </p> {/* Would Suite be optional?*/}
-        <p>City: {customer.address?.city}</p>
-        <p>Zipcode: {customer.address?.zipcode}</p>
+        <p>Email: {customer.email}</p>
+        <p>Phone: {customer.phone}</p>
+        {customer.address && (
+          <div>
+          <h4>Address:</h4>
+          <p>Street: {customer.address.street}</p>
+          <p>Suite: {customer.address.suite} </p> {/* Would Suite be optional?*/}
+          <p>City: {customer.address.city}</p>
+          <p>Zipcode: {customer.address.zipcode}</p>
+          {customer.address.geo &&(
+            <div> {/*Would Geo also be optional or not?*/}
+              <h5>Geo:</h5> 
+              <p>Lat: {customer.address.geo.lat}</p>
+              <p>Lng: {customer.address.geo.lng}</p>
+            </div>)}
+        </div>)}
         <div>
-          <h5>Geo:</h5> {/*Would Geo also be optional or not?*/}
-          <p>Lat: {customer.address?.geo?.lat}</p>
-          <p>Lng: {customer.address?.geo?.lng}</p>
+          <h4>Company:</h4>
+          <p>Name: {customer.company?.name}</p>  {/*Kept in case this style is more suited*/}
+          <p>Catch Phrase: {customer.company?.catchPhrase}</p>
+          <p>BS: {customer.company?.bs}</p>
         </div>
       </div>
-      <div>
-        <h4>Company:</h4>
-        <p>Name: {customer.company?.name}</p>
-        <p>Catch Phrase: {customer.company?.catchPhrase}</p>
-        <p>BS: {customer.company?.bs}</p>
-      </div>
-    </div>
     </div>
   );
 }
