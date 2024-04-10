@@ -1,36 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-
+import { Customer } from './Customer';
 import './App.css'
 
-interface Customer {
-    id?: number;
-    name?: string;
-    username?: string;
-    email?: string;
-    address?: {
-      street?: string;
-      suite?: string;
-      city?: string;
-      zipcode?: string;
-      geo?: {
-        lat?: string;
-        lng?: string;
-      };
-    };
-    phone?: string;
-    website?: string;
-    company?: {
-      name?: string;
-      catchPhrase?: string;
-      bs?: string;
-    };
-  }
 
 function CustomerDetails() {
 
   const { id } = useParams();
-  const [customer, setUser] = useState<Customer>({});
+  const [customer, setUser] = useState<Partial<Customer>>({});
 
   useEffect(() => {
     console.log("TRY")
@@ -48,10 +25,22 @@ function CustomerDetails() {
     <div>
     <h3>{customer.name}</h3>
     <div>
-    <div>Email: {customer.email}</div>
-    <div>Phone: {customer.phone}</div>
-    <div>City: {customer.address?.city}</div>
-    <div>Etc Etc ...</div>
+      <p>Email: {customer.email}</p>
+      <p>Phone: {customer.phone}</p>
+      {customer.address && (
+      <div>
+        <h4>Address:</h4>
+        <p>Street: {customer.address.street}</p>
+        <p>Suite: {customer.address.suite}</p>
+        <p>City: {customer.address.city}</p>
+        <p>Zipcode: {customer.address.zipcode}</p>
+
+      </div>)}
+      <div>
+          <h4>Geo:</h4>
+          <p>Lat: {customer.address?.geo?.lat}</p>
+          <p>Lng: {customer.address?.geo?.lng}</p>
+      </div>
     </div>
     </div>
   );
